@@ -1,0 +1,91 @@
+# بایت‌کد و فایل‌های کامپایل شده پایتون
+__pycache__/
+*.py[cod]
+*$py.class
+
+# فایل‌های موقت و کش پایتون
+.Python
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# محیط‌های مجازی (Virtual Environments)
+# هرگز پوشه محیط مجازی خود را کامیت نکنید!
+newtodo_env/
+venv/
+env/
+.venv/
+.env/ # توجه: این پوشه .env است نه فایل .env (فایل .env هم باید جداگانه اضافه شود اگر حاوی اسرار است)
+ENV/
+pip-wheel-metadata/
+
+# فایل‌های پایگاه داده
+# به خصوص برای SQLite که در توسعه محلی استفاده می‌شود
+*.sqlite3
+db.sqlite3
+*.db
+
+# فایل‌های مدیا و استاتیک جمع‌آوری شده
+# این فایل‌ها معمولاً در سرور با collectstatic ساخته می‌شوند یا از CDN سرو می‌شوند
+# مگر اینکه دلیل خاصی برای کامیت کردن فایل‌های مدیا (مثلاً نمونه) داشته باشید
+media/
+staticfiles/ # پوشه‌ای که با دستور collectstatic ساخته می‌شود
+assets/ # اگر از این نام برای خروجی بسته‌بندهای فرانت‌اند استفاده می‌کنید
+
+# فایل‌های مربوط به تنظیمات محلی و اسرار (Secrets)
+# این فایل‌ها نباید هرگز به ریپازیتوری عمومی ارسال شوند
+local_settings.py
+settings_local.py
+*.local.py
+.env # بسیار مهم! اگر متغیرهای محیطی و کلیدهای مخفی در این فایل هستند
+secrets.ini
+credentials.json
+*.pem # فایل‌های کلید خصوصی
+
+# فایل‌های لاگ (Logs)
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# فایل‌ها و پوشه‌های مربوط به IDE ها و ویرایشگرها
+.vscode/
+.idea/ # برای محصولات JetBrains مثل PyCharm
+*.project
+*.pydevproject
+*.sublime-workspace
+*.sublime-project
+.DS_Store # فایل‌های سیستمی macOS
+Thumbs.db # فایل‌های سیستمی Windows
+desktop.ini # فایل‌های سیستمی Windows
+
+# فایل‌های مربوط به تست و پوشش کد (Coverage)
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+
+# فایل‌های مربوط به ابزارهای بسته‌بندی و توزیع پایتون
+dist/
+build/
+*.egg-info/
+*.egg
+MANIFEST
+
+# پوشه node_modules (اگر از ابزارهای جاوااسکریپت مثل NPM یا Yarn استفاده می‌کنید)
+node_modules/
+
+# فایل‌های مربوط به سیستم عامل
+*~
+._*
+
+# مستندات ساخته شده (مثلاً توسط Sphinx)
+_build/
+docs/_build/
+
+# سایر فایل‌های موقت یا خاص
+# .swp # فایل‌های swap مربوط به Vim
+# .swo

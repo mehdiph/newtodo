@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'todos/index.css/' %}">
+{% endblock css %}
+
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card">
+                    <div class="stats-number">12</div>
+                    <div class="stats-label">Total Tasks</div>
+                    <i class="bi bi-list-task text-primary fs-1"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card">
+                    <div class="stats-number">8</div>
+                    <div class="stats-label">Completed</div>
+                    <i class="bi bi-check-circle text-success fs-1"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card">
+                    <div class="stats-number">3</div>
+                    <div class="stats-label">In Progress</div>
+                    <i class="bi bi-arrow-repeat text-info fs-1"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card">
+                    <div class="stats-number">1</div>
+                    <div class="stats-label">Overdue</div>
+                    <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add Task Section -->
+        <section id="add-task" class="mb-5">
+            <h2 class="page-title">Add New Task</h2>
+            
+            <div class="add-task-container">
+                <form action="{% url 'todos:tasks' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                            <!-- <label for="taskTitle" class="form-label">Task Title</label>
+                            <input type="text" class="form-control" id="taskTitle" placeholder="What needs to be done?"> -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.due_date.label_tag }}
+                            {{ form.due_date }}
+                            <!-- <label for="dueDate" class="form-label">Due Date</label>
+                            <input type="date" class="form-control" id="dueDate"> -->
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        <!-- <label for="taskDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Add details about your task..."></textarea> -->
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Priority</label>
+                            <div>
+                                {% for pr in form.priority %}
+                                    <div class="form-check form-check-inline mt-2">
+                                        {{ pr }}
+                                        <label class="form-check-label" for="{{ pr.id_for_label }}">
+                                            <span class="priority-indicator priority-{{ pr.choice_label|lower }}"></span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <!-- <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityLow" checked>
+                                    
+                                    <label class="form-check-label" for="priorityLow">
+                                        <span class="priority-indicator priority-low"></span> Low
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityMedium">
+                                    <label class="form-check-label" for="priorityMedium">
+                                        <span class="priority-indicator priority-medium"></span> Medium
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="priority" id="priorityHigh">
+                                    <label class="form-check-label" for="priorityHigh">
+                                        <span class="priority-indicator priority-high"></span> High
+                                    </label>
+                                </div> -->
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <!-- <label for="taskCategory" class="form-label">Category</label>
+                            <select class="form-select" id="taskCategory">
+                                <option selected>Personal</option>
+                                <option>Work</option>
+                                <option>Study</option>
+                                <option>Health</option>
+                                <option>Finance</option>
+                            </select> -->
+                            {{ form.category.label_tag }}
+                            {{ form.category }}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            {{ form.tag.label_tag }}
+                            {{ form.tag }}
+                            <!-- <label for="taskTags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="taskTags" placeholder="Add tags (comma separated)"> -->
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="reset" class="btn btn-light me-2">Reset</button>
+                        <button type="submit" class="btn btn-light">Add Task</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <!-- Show Tasks Section -->
+        <section id="show-tasks">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="page-title">Your Tasks</h2>
+                <div class="filter-buttons">
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary active">All</button>
+                        <button class="btn btn-outline-primary">Active</button>
+                        <button class="btn btn-outline-primary">Completed</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for task in tasks %}
+                <div class="col-md-6">
+                        <div class="card task-card {% if task.is_done %} completed {% endif %}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title task-title">{{ task.title }}</h5>
+                                        <p class="card-text">{{ task.description }}</p>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-primary me-2">{{ task.category|title }}</span>
+                                            <span class="badge badge-priority badge-{{ task.priority|lower }} me-2">{{ task.priority|title }} Priority</span>
+                                            <small class="text-muted"><i class="bi bi-calendar me-1"></i> Due: {{ task.status }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="task-actions">
+                                        <a href="{% url 'todos:done' task.id %}"><button class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg"></i></button></a>
+                                        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body empty-state">
+                                    <i class="bi bi-check2-square"></i>
+                                    <h3>No tasks yet</h3>
+                                    <p class="text-muted">You have no tasks. Add a new task to get started!</p>
+                                    <button class="btn btn-primary">Add Your First Task</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div> 
+            
+            <!-- Empty State -->
+            
+        </section>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <a href="#add-task" class="floating-btn btn btn-primary">
+        <i class="bi bi-plus-lg"></i>
+    </a>
+    
+{% endblock content %}
